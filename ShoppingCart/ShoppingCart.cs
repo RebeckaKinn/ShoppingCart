@@ -12,33 +12,25 @@
 
         public Product GetProductFromStore(string productName)
         {
-            return Store.First(i => productName == i.ShowName());
+            return Store.First(i => productName == i.Name);
         }
         public void AddToCart(Product product, int amount)
         {
             var newItem = new OrderLine(product, amount);
-            if (newItem.IsInCart(product, Cart, amount)) return;
+            if (IsInCart(product, Cart, amount)) return;
             Cart.Add(newItem);
         }
         public void AddToCart(Product product)
         {
-            var newItem = new OrderLine(product, 1);
-            if (newItem.IsInCart(product, Cart, 1)) return;
-            Cart.Add(newItem);
+            AddToCart(product, 1);
         }
         public void AddToCart(string product, int amount)
         {
-            var newProduct = GetProductFromStore(product);
-            var newItem = new OrderLine(newProduct, amount);
-            if (newItem.IsInCart(newProduct, Cart, amount)) return;
-            Cart.Add(newItem);
+            AddToCart(GetProductFromStore(product), amount);
         }
         public void AddToCart(string product)
         {
-            var newProduct = GetProductFromStore(product);
-            var newItem = new OrderLine(newProduct, 1);
-            if (newItem.IsInCart(newProduct, Cart, 1)) return;
-            Cart.Add(newItem);
+            AddToCart(GetProductFromStore(product), 1);
         }
 
         public void RemoveFromCart(OrderLine product)
@@ -60,6 +52,16 @@
                 totalSum += item.TotalCount(item.ShowProduct());
             }
             Console.WriteLine($"\nTotalt: {totalSum} kr.\n");
+        }
+        public bool IsInCart(Product product, List<OrderLine> cart, int amount)
+        {
+            foreach (var order in cart.Where(order => order.ShowProduct().Name == product.Name))
+            {
+                order.AddItems(amount);
+                return true;
+            }
+            return false;
+            //return cart.Any(ol => ol.ShowProduct() == product);
         }
     }
 }
