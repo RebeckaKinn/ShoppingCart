@@ -17,8 +17,28 @@
         public void AddToCart(Product product, int amount)
         {
             var newItem = new OrderLine(product, amount);
-            if (Cart.Contains(newItem)) newItem.AddItems(amount);
-            else Cart.Add(newItem);
+            if (newItem.IsInCart(product, Cart, amount)) return;
+            Cart.Add(newItem);
+        }
+        public void AddToCart(Product product)
+        {
+            var newItem = new OrderLine(product, 1);
+            if (newItem.IsInCart(product, Cart, 1)) return;
+            Cart.Add(newItem);
+        }
+        public void AddToCart(string product, int amount)
+        {
+            var newProduct = GetProductFromStore(product);
+            var newItem = new OrderLine(newProduct, amount);
+            if (newItem.IsInCart(newProduct, Cart, amount)) return;
+            Cart.Add(newItem);
+        }
+        public void AddToCart(string product)
+        {
+            var newProduct = GetProductFromStore(product);
+            var newItem = new OrderLine(newProduct, 1);
+            if (newItem.IsInCart(newProduct, Cart, 1)) return;
+            Cart.Add(newItem);
         }
 
         public void RemoveFromCart(OrderLine product)
@@ -32,20 +52,14 @@
                 Console.WriteLine("Handlekurven er tom.");
                 return;
             }
-            else
+            Console.WriteLine("Handlekurv:");
+            int totalSum = 0;
+            foreach (OrderLine item in Cart)
             {
-                Console.WriteLine("Handlekurv:");
-                int totalSum = 0;
-                foreach (OrderLine item in Cart)
-                {
-                    Console.WriteLine($"{item.ShowCount()} stk " +
-                        $"{item.ShowProduct().ShowName()} " +
-                        $"{item.ShowProduct().ShowPrice()} kr " +
-                        $"= {item.TotalCount(item.ShowProduct())}");
-                    totalSum += item.TotalCount(item.ShowProduct());
-                }
-                Console.WriteLine($"\nTotalt: {totalSum} kr.\n");
+                item.ShowInfo();
+                totalSum += item.TotalCount(item.ShowProduct());
             }
+            Console.WriteLine($"\nTotalt: {totalSum} kr.\n");
         }
     }
 }
