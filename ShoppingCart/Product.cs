@@ -2,8 +2,8 @@
 {
     public class Product
     {
-        public string Name;
-        public int Price;
+        public string Name { get; }
+        public int Price { get; }
 
         public Product(string name, int price)
         {

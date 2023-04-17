@@ -2,12 +2,12 @@
 {
     public class OrderLine
     {
-        private Product _product;
+        public Product Product { get; }
         private int _count;
 
         public OrderLine(Product newProduct, int quantity)
         {
-            _product = newProduct;
+            Product = newProduct;
             _count = quantity;
         }
 
@@ -21,11 +21,6 @@
             _count = _count + itemsToAdd;
         }
 
-        public Product ShowProduct()
-        {
-            return _product;
-        }
-
         public int TotalCount(Product product)
         {
             return _count * product.Price;
@@ -34,9 +29,9 @@
         public void ShowInfo()
         {
             Console.WriteLine($"{_count} stk " +
-                    $"{ShowProduct().Name} " +
-                    $"{ShowProduct().Price} kr " +
-                    $"= {TotalCount(ShowProduct())}");
+                    $"{Product.Name} " +
+                    $"{Product.Price} kr " +
+                    $"= {TotalCount(Product)}");
         }
     }
 }

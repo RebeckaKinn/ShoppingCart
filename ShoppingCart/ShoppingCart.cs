@@ -16,9 +16,20 @@
         }
         public void AddToCart(Product product, int amount)
         {
-            if (Cart.Any(p => p.ShowProduct() == product))
+            /*var orderLine = Cart.FirstOrDefault(ol => ol.ShowProduct() == product);
+            if (orderLine != null)
             {
-                var orderLine = Cart.FirstOrDefault(p => p.ShowProduct() == product);
+                orderLine.AddItems(amount);
+            }
+            else
+            {
+                var newItem = new OrderLine(product, amount);
+                Cart.Add(newItem);
+            }
+             */
+            if (Cart.Any(p => p.Product == product))
+            {
+                var orderLine = Cart.FirstOrDefault(p => p.Product == product);
                 orderLine.AddItems(amount);
             }
             else Cart.Add(new OrderLine(product, amount));
@@ -52,7 +63,7 @@
             foreach (OrderLine item in Cart)
             {
                 item.ShowInfo();
-                totalSum += item.TotalCount(item.ShowProduct());
+                totalSum += item.TotalCount(item.Product);
             }
             Console.WriteLine($"\nTotalt: {totalSum} kr.\n");
         }
