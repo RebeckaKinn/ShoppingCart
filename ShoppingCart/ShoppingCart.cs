@@ -16,9 +16,12 @@
         }
         public void AddToCart(Product product, int amount)
         {
-            var newItem = new OrderLine(product, amount);
-            if (IsInCart(product, Cart, amount)) return;
-            Cart.Add(newItem);
+            if (Cart.Any(p => p.ShowProduct() == product))
+            {
+                var orderLine = Cart.FirstOrDefault(p => p.ShowProduct() == product);
+                orderLine.AddItems(amount);
+            }
+            else Cart.Add(new OrderLine(product, amount));
         }
         public void AddToCart(Product product)
         {
@@ -52,16 +55,6 @@
                 totalSum += item.TotalCount(item.ShowProduct());
             }
             Console.WriteLine($"\nTotalt: {totalSum} kr.\n");
-        }
-        public bool IsInCart(Product product, List<OrderLine> cart, int amount)
-        {
-            foreach (var order in cart.Where(order => order.ShowProduct().Name == product.Name))
-            {
-                order.AddItems(amount);
-                return true;
-            }
-            return false;
-            //return cart.Any(ol => ol.ShowProduct() == product);
         }
     }
 }
