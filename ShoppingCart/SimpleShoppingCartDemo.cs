@@ -5,9 +5,11 @@
         public static void Run()
         {
             var shoppingCart = new ShoppingCart();
-            shoppingCart.AddToCart(shoppingCart.GetProductFromStore("A"), 2);
+            shoppingCart.AddToCart(shoppingCart.GetProductFromStore("A"));
             shoppingCart.ShowCart();
-            shoppingCart.AddToCart(shoppingCart.GetProductFromStore("B"), 1);
+            shoppingCart.AddToCart("B", 1);
+            shoppingCart.ShowCart();
+            shoppingCart.AddToCart("B");
             shoppingCart.ShowCart();
             shoppingCart.AddToCart(shoppingCart.GetProductFromStore("C"), 3);
             shoppingCart.ShowCart();
